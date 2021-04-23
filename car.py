@@ -6,7 +6,7 @@ class Car:
         self.make = make
         self.model = model
         self.year = year
-        self.price = 0
+        self.price = 1000
         self.odometer_reading = 0
     
     def get_descriptive_name(self):
