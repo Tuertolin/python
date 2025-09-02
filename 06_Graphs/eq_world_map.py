@@ -1,6 +1,8 @@
 import json
+from plotly.graph_objs import Scattergeo, Layout
+from plotly import offline
 
-# Explore the structure data
+# Map the earthquakes
 filename = 'eq_data_1_day_m1.json'
 with open(filename) as f:
     all_eq_data = json.load(f)
@@ -21,3 +23,8 @@ print(mags[:10])
 print(lons[:5])
 print(lats[:5])
 
+data = [Scattergeo(lon=lons, lat=lats)]
+my_layout = Layout(title='Global Earthquakes')
+
+fig = {'data': data, 'layout': my_layout}
+offline.plot(fig, filename='global_earthquakes.html')
