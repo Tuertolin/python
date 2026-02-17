@@ -1,0 +1,68 @@
+
+Using Streamlit Secrets Management
+
+Streamlit provides a built-in secrets management system that keeps your API keys and tokens secure and separate from your code.
+Local Development Setup
+
+1. Create a secrets file Create a .streamlit/secrets.toml file in your project directory:
+
+toml
+
+# .streamlit/secrets.toml
+[trello]
+api_key = "your_trello_api_key_here"
+api_secret = "your_trello_api_secret_here"
+oauth_token = "your_trello_oauth_token_here"
+
+2. Access secrets in your code
+
+python
+
+import streamlit as st
+from trello import TrelloClient
+
+# Access secrets securely
+client = TrelloClient(
+    api_key=st.secrets["trello"]["api_key"],
+    api_secret=st.secrets["trello"]["api_secret"],
+    token=st.secrets["trello"]["oauth_token"]
+)
+
+3. Add to .gitignore Always exclude your secrets file from version control:
+
+# .gitignore
+.streamlit/secrets.toml
+
+Deployment (Streamlit Cloud)
+
+When deploying to Streamlit Cloud:
+
+    Go to your app's settings in Streamlit Cloud
+    Navigate to the "Secrets" section
+    Paste your secrets in TOML format directly into the text box
+    Streamlit Cloud encrypts and securely stores these values
+
+Alternative: Environment Variables
+
+For other deployment platforms (AWS, Heroku, etc.):
+
+python
+
+import os
+import streamlit as st
+
+# Fallback to environment variables if secrets aren't available
+api_key = st.secrets.get("trello", {}).get("api_key") or os.getenv("TRELLO_API_KEY")
+api_secret = st.secrets.get("trello", {}).get("api_secret") or os.getenv("TRELLO_API_SECRET")
+oauth_token = st.secrets.get("trello", {}).get("oauth_token") or os.getenv("TRELLO_OAUTH_TOKEN")
+
+Best Practices
+
+    Never hardcode credentials in your Python files
+    Never commit secrets to Git repositories
+    Use different credentials for development and production
+    Rotate tokens regularly for enhanced security
+    Limit API token permissions to only what your app needs
+    Use st.secrets as the primary method for Streamlit apps
+
+Since you're learning Python and working toward AWS certifications, understanding secrets management is valuable not just for Streamlit but also for AWS services like AWS Secrets Manager and Systems Manager Parameter Store.
